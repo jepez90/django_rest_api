@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "django_rest_api"
+version = "0.1.0"
+description = "Aplication usin DJango Rest Framework"
+authors = ["Jerson Perez <ing.jersonperez@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+djangorestframework = "^3.12.4"
+mysqlclient = "^2.0.*"
+python-dotenv = "^0.19.1"
+
+[tool.poetry.dev-dependencies]
+autopep8 = "^1.5.7"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

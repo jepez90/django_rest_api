@@ -4,12 +4,10 @@ from rest_framework.response import Response
 from apps.api.models.client_model import Client
 from apps.api.serializers import ClientSerializer
 
-# Create your views here.
-
 
 # view clients
 @api_view(['GET', 'POST'])
-def clients_api_view(request):
+def clients_list_view(request):
     """ shows all clients when method is get 
     or creates a new client if method is POST
     """
@@ -29,7 +27,7 @@ def clients_api_view(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def client_api_detail(request, id=None):
+def clients_detail_view(request, id=None):
     """ shows a client by id when method is get,
     deletes a client by id if method is DELETE
     or updates a client by id if method is PUT

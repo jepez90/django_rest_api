@@ -1,4 +1,5 @@
 from django.db import models
+from apps.api.models.doc_type_model import DocType
 
 
 class Client(models.Model):
