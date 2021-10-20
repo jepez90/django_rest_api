@@ -23,10 +23,12 @@ class ReservsApiView(ListCreateAPIView):
     pagination_class = CustomPagination
 
     queryset = Reserve.objects.all()
-    filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
-    filterset_fields = ('id', 'date', 'is_used', 'plate', 'owner', 'driver', )
-    search_fields =  ['date', 'plate']
-    ordering_fields =  ['id', 'date', 'plate']
+    filter_backends = (DjangoFilterBackend,
+                       filters.SearchFilter, filters.OrderingFilter)
+    filterset_fields = ('id', 'date', 'ended', 'plate',
+                        'owner', 'driver', 'car_type', 'rev_type')
+    search_fields = ['date', 'plate']
+    ordering_fields = ['id', 'date', 'plate']
 
     def perform_create(self, serializer):
         return serializer.save()

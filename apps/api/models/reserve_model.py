@@ -1,6 +1,8 @@
 from django.db import models
+from apps.api.models.car_type_model import CarType
 from apps.api.models.doc_type_model import DocType
 from apps.api.models.client_model import Client
+from apps.api.models.revision_type_model import RevisionType
 
 
 class Reserve(models.Model):
@@ -9,9 +11,11 @@ class Reserve(models.Model):
     updated_date = models.DateTimeField(auto_now=True)
     date = models.DateField()
     hour = models.TimeField()
-    is_used = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
     plate = models.CharField(max_length=6, blank=False)
+    ended = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
+    car_type = models.ForeignKey('CarType', on_delete=models.PROTECT)
+    rev_type = models.ForeignKey('RevisionType', on_delete=models.PROTECT)
     owner = models.ForeignKey(
         'Client', on_delete=models.PROTECT, related_name='r_as_owner')
     driver = models.ForeignKey(

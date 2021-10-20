@@ -8,7 +8,7 @@ from apps.api.serializers import ClientSerializer
 # view clients
 @api_view(['GET', 'POST'])
 def clients_list_view(request):
-    """ shows all clients when method is get 
+    """ shows all clients when method is get
     or creates a new client if method is POST
     """
     # list clients
