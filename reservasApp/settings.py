@@ -45,6 +45,7 @@ BASE_APPS = [
 
     'rest_framework',
     'django_filters',
+    'drf_yasg',
 ]
 
 CUSTOM_APPS = [
