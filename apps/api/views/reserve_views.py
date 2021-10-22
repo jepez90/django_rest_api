@@ -28,7 +28,7 @@ class ReservsApiView(ListCreateAPIView):
     filterset_fields = ('id', 'date', 'ended', 'plate',
                         'owner', 'driver', 'car_type', 'rev_type')
     search_fields = ['date', 'plate']
-    ordering_fields = ['id', 'date', 'plate']
+    ordering_fields = ['id', 'date', 'plate', 'hour']
 
     def perform_create(self, serializer):
         return serializer.save()
