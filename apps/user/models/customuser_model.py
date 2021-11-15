@@ -6,14 +6,19 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.core.mail import send_mail
 from django.conf import settings
+
+from apps.user.models.customuser_manager_model import CustomUserManager
+
 import datetime
 import jwt
 
-from apps.users.models.custom_user_manager import CustomUserManager
-
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    """ Model to be used in login """
+
     username_validator = UnicodeUsernameValidator()
+
+    # holds the manager
     objects = CustomUserManager()
 
     # fields
@@ -32,8 +37,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         _('Identity Doccument'), unique=True, max_length=15)
     email = models.EmailField(_('email address'), blank=False, unique=True)
     full_name = models.CharField(_('full name'), max_length=150, blank=True)
-    last_change = models.DateTimeField(
-        _('last password change'), blank=True, auto_now_add=True)
+
     creator = models.ForeignKey(
         'CustomUser', on_delete=models.PROTECT, related_name='created_users', default=1)
     is_staff = models.BooleanField(
@@ -51,8 +55,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         ),
     )
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+    last_change = models.DateTimeField(
+        _('last password change'), blank=True, auto_now_add=True)
 
-    # remove the fielsd of the parent
+    # remove the fields of the parent
     first_name = None
     last_name = None
 
@@ -78,12 +84,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     @property
     def token(self):
+        """ generates a JWT token """
+        TOKEN_EXPIRE_HOURS = 12
+        data = {
+            'username': self.username,
+            'email': self.email,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=TOKEN_EXPIRE_HOURS)
+        }
         token = jwt.encode(
-            {
-                'username': self.username,
-                'email': self.email,
-                'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=6)
-            },
+            data,
             settings.SECRET_KEY,
             algorithm='HS256'
         )

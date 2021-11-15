@@ -10,7 +10,7 @@ from apps.api.pagination import CustomPagination
 
 
 # Class to handle reserves
-class ReservsApiView(ListCreateAPIView):
+class ReservsListApiView(ListCreateAPIView):
     """ GET:----retrive a list of reserves
         ------->you can use the next query params
         ------->order_by=date-time [id, plate, date, time, date-time]
@@ -45,4 +45,6 @@ class ReservsDetailApiView(RetrieveUpdateDestroyAPIView):
         return Response({'message': msg}, status=status.HTTP_404_NOT_FOUND)
 
     def get_queryset(self):
-        return Reserve.objects.all()
+        objects = Reserve.objects.all().select_related('owner')
+        print(objects)
+        return objects
