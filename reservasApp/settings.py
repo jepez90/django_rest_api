@@ -19,6 +19,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:4200',
+]
+
 
 # Application definition
 
@@ -34,19 +38,21 @@ BASE_APPS = [
     'rest_framework',
     'django_filters',
     'drf_yasg',
+    'corsheaders',
 ]
 
 CUSTOM_APPS = [
-    'apps.user',
+    'apps.accounts',
     'apps.api',
 ]
 
 
-INSTALLED_APPS = CUSTOM_APPS + BASE_APPS 
+INSTALLED_APPS = CUSTOM_APPS + BASE_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -56,10 +62,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'reservasApp.urls'
 
+TEMPLATES_DIR = os.path.join(BASE_DIR, "apps/web/static/")
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATES_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -90,13 +98,21 @@ DATABASES = {
 }
 
 
-AUTH_USER_MODEL = 'user.CustomUser'
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 AUTH_AUTHENTICATION_TYPE = 'both'
 
+# custom auth
+AUTHENTICATION_BACKENDS = [
+    'apps.accounts.helpers.backends.CustomBackend'
+]
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'apps.user.helpers.jwt.JWTAuthentication',
+        'apps.accounts.helpers.jwt.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
     ]
 }
 
@@ -137,3 +153,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = '/home/jp/dev/projects/django_rest_api/apps/web/static/'

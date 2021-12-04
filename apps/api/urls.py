@@ -1,11 +1,10 @@
-from django.urls import path, include
-from apps import user
+from django.urls import path
 from apps.api.views.client_views import clients_list_view, clients_detail_view
 from apps.api.views.doc_type_views import DoctypeApiView
 from apps.api.views.reserve_views import ReservsListApiView, ReservsDetailApiView
 from apps.api.views.car_type_views import CartypeApiView
 from apps.api.views.revision_type_views import RevisiontypeApiView
-from rest_framework import permissions
+from rest_framework.routers import DefaultRouter
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
@@ -22,7 +21,6 @@ schema_view = get_schema_view(
     permission_classes=[],
     authentication_classes = []
 )
-
 
 urlpatterns = [
     path('clients/', clients_list_view, name='clients_list_view'),

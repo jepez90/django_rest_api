@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from django.core.mail import send_mail
 from django.conf import settings
 
-from apps.user.models.customuser_manager_model import CustomUserManager
+from apps.accounts.models.customuser_manager_model import CustomUserManager
 
 import datetime
 import jwt
@@ -82,6 +82,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
+    def get_full_name(self):
+        self.full_name
+
+    def get_short_name(self):
+        self.full_name
+
+    def __str__(self):
+        return self.full_name
+
     @property
     def token(self):
         """ generates a JWT token """
@@ -89,7 +98,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         data = {
             'username': self.username,
             'email': self.email,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=TOKEN_EXPIRE_HOURS)
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=10)
         }
         token = jwt.encode(
             data,
