@@ -20,6 +20,8 @@ class DoctypeSerializer(serializers.ModelSerializer):
 
 
 class ReserveSerializer(serializers.ModelSerializer):
+
+    driver = serializers.SlugRelatedField(slug_field='full_name',queryset=Client.objects.all())
     class Meta:
         model = Reserve
         fields = '__all__'

@@ -98,7 +98,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         data = {
             'username': self.username,
             'email': self.email,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=10)
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=300)
         }
         token = jwt.encode(
             data,
